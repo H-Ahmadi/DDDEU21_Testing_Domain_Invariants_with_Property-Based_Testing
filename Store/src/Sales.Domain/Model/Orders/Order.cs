@@ -18,7 +18,7 @@ namespace Sales.Domain.Model.Orders
         }
         public double TotalPrice()
         {
-            return _items.Sum(a => a.TotalPrice());
+            throw new NotImplementedException();
         }
         public void ApplyDiscount(Discount discount)
         {
