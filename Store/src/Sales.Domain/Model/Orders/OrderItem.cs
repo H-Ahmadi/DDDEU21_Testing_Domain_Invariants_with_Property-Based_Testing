@@ -1,4 +1,6 @@
-﻿namespace Sales.Domain.Model.Orders
+﻿using System;
+
+namespace Sales.Domain.Model.Orders
 {
     public class OrderItem
     {
@@ -13,7 +15,7 @@
         }
         public double TotalPrice()
         {
-            return this.Amount * EachPrice;
+            throw new NotImplementedException();
         }
     }
 }
