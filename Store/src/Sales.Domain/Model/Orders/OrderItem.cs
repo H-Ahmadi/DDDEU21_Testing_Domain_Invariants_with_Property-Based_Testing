@@ -15,7 +15,7 @@ namespace Sales.Domain.Model.Orders
         }
         public long TotalPrice()
         {
-            throw new NotImplementedException();
+            return 0;
         }
     }
 }
