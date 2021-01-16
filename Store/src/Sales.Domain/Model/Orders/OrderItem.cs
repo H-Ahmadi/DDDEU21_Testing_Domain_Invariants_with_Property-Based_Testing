@@ -6,14 +6,14 @@ namespace Sales.Domain.Model.Orders
     {
         public long ProductId { get; private set; }
         public long Amount { get; private set; }
-        public double EachPrice { get; private set; }
-        public OrderItem(long productId, long amount, double eachPrice)
+        public long EachPrice { get; private set; }
+        public OrderItem(long productId, long amount, long eachPrice)
         {
             ProductId = productId;
             Amount = amount;
             EachPrice = eachPrice;
         }
-        public double TotalPrice()
+        public long TotalPrice()
         {
             throw new NotImplementedException();
         }
