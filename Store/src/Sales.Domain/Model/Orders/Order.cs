@@ -16,7 +16,7 @@ namespace Sales.Domain.Model.Orders
             this.Id = id;
             this._items = items;
         }
-        public double TotalPrice()
+        public long TotalPrice()
         {
             throw new NotImplementedException();
         }
