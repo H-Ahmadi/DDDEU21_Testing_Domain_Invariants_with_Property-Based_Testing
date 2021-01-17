@@ -15,7 +15,7 @@ namespace Sales.Domain.Model.Orders
         }
         public long TotalPrice()
         {
-            return 0;
+            return EachPrice;
         }
     }
 }
