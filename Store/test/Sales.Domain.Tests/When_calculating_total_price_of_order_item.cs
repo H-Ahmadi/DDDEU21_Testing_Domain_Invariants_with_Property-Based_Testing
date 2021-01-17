@@ -1,4 +1,7 @@
-﻿using FsCheck;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FsCheck;
 using FsCheck.Xunit;
 using Sales.Domain.Model.Orders;
 using Sales.Domain.Tests.TestHelpers;
@@ -19,6 +22,15 @@ namespace Sales.Domain.Tests
         {
             var orderItem = new OrderItem(TestProducts.Laptop, 1, price.Get);
             return (orderItem.TotalPrice() == price.Get).ToProperty();
+        }
+
+        [Property]
+        public Property total_price_is_equal_to_add_each_price_to_itself_amount_times(PositiveInt amount, PositiveInt eachPrice)
+        {
+            var orderItem = new OrderItem(TestProducts.Laptop, amount.Get, eachPrice.Get);
+            var expectedTotalPrice = Enumerable.Repeat(eachPrice.Get, amount.Get).Aggregate((a,b) => a + b);
+
+            return (orderItem.TotalPrice() == expectedTotalPrice).ToProperty();
         }
     }
 }
