@@ -19,4 +19,11 @@ public class When_calculating_total_price_of_order_item {
         var orderItem = new OrderItem(LAPTOP, amount, 0);
         assertThat(orderItem.totalPrice()).isEqualTo(0);
     }
+
+    @Property
+    public void total_price_is_equal_to_each_price_when_amount_is_one(
+            @InRange(minInt = 0) int price) {
+        var orderItem = new OrderItem(LAPTOP, 1, price);
+        assertThat(orderItem.totalPrice()).isEqualTo(price);
+    }
 }
