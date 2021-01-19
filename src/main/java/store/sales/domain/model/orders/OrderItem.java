@@ -12,7 +12,7 @@ public class OrderItem {
     }
 
     public long totalPrice() {
-        throw new UnsupportedOperationException();
+        return 0;
     }
 
     public long getProductId() {
