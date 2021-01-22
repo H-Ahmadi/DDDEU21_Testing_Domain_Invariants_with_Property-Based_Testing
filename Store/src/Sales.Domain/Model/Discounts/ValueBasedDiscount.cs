@@ -4,13 +4,13 @@ namespace Sales.Domain.Model.Discounts
 {
     public class ValueBasedDiscount : DiscountCalculation
     {
-        private readonly double _discountValue;
+        private readonly int _discountValue;
         public ValueBasedDiscount(int discountValue)
         {
             _discountValue = discountValue;
         }
 
-        public override double CalculateDiscount(double totalPrice)
+        public override long CalculateDiscount(long totalPrice)
         {
             throw new NotImplementedException();
         }
