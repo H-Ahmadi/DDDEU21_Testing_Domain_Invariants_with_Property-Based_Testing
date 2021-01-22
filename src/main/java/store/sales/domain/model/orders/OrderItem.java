@@ -12,7 +12,7 @@ public class OrderItem {
     }
 
     public long totalPrice() {
-        return eachPrice;
+        return eachPrice * amount;
     }
 
     public long getProductId() {
