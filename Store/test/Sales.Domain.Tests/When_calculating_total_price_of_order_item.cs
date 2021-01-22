@@ -15,7 +15,7 @@ namespace Sales.Domain.Tests
         }
 
         [Property]
-        public Property total_price_is_equal_to_each_price_when_amount_is_one(PositiveInt price)
+        public Property total_price_is_equal_to_each_price_when_quantity_is_one(PositiveInt price)
         {
             var orderItem = new OrderItem(TestProducts.Laptop, 1, price.Get);
             return (orderItem.TotalPrice() == price.Get).ToProperty();
