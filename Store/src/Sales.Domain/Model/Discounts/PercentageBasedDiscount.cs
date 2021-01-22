@@ -4,7 +4,7 @@ namespace Sales.Domain.Model.Discounts
 {
     public class PercentageBasedDiscount : DiscountStrategy
     {
-        private readonly double _percent;
+        private readonly float _percent;
         public PercentageBasedDiscount(float percent)
         {
             _percent = percent;
