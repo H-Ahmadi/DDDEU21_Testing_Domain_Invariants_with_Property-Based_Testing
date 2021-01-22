@@ -8,18 +8,18 @@ namespace Sales.Domain.Model.Discounts
     {
         public long Id { get; private set; }
         public DateTime ExpirationTime { get; private set; }
-        public DiscountCalculation Calculation { get; private set; }
-        public double MaxDiscountValue { get; private set; }
-        public Discount(long id,DateTime expirationTime, DiscountCalculation calculation, double maxDiscountValue)
+        public DiscountStrategy Strategy { get; private set; }
+        public long? MaxDiscountValue { get; private set; }
+        public Discount(long id, DateTime expirationTime, DiscountStrategy strategy, long? maxDiscountValue)
         {
             Id = id;
             ExpirationTime = expirationTime;
-            Calculation = calculation;
+            Strategy = strategy;
             MaxDiscountValue = maxDiscountValue;
         }
-        public float CalculateDiscountFor(Order order)
+        public long CalculateDiscountFor(Order order)
         {
-            throw new NotImplementedException();
+            return Strategy.CalculateDiscount(order.TotalPrice());
         }
     }
 }

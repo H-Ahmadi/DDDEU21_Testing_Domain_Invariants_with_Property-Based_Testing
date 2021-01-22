@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Sales.Domain.Model.Discounts;
 
 namespace Sales.Domain.Model.Orders
@@ -9,7 +10,7 @@ namespace Sales.Domain.Model.Orders
     {
         private List<OrderItem> _items;
         public long Id { get; private set; }
-        public AppliedDiscount AppliedDiscount { get;private set; }
+        public AppliedDiscount AppliedDiscount { get; private set; }
         public IReadOnlyList<OrderItem> Items => _items.AsReadOnly();
         public Order(long id, List<OrderItem> items)
         {
@@ -18,11 +19,15 @@ namespace Sales.Domain.Model.Orders
         }
         public long TotalPrice()
         {
-            return Items.Sum(a => a.TotalPrice());
+            var totalPrice = Items.Sum(a => a.TotalPrice());
+            if (this.AppliedDiscount == null) return totalPrice;
+            if (this.AppliedDiscount.Value > totalPrice) return 0;
+            return totalPrice - AppliedDiscount.Value;
         }
         public void ApplyDiscount(Discount discount)
         {
-            throw new NotImplementedException();
+            var discountValue = discount.CalculateDiscountFor(this);
+            this.AppliedDiscount = new AppliedDiscount(discount.Id, discountValue);
         }
     }
 }

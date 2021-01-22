@@ -2,17 +2,17 @@
 
 namespace Sales.Domain.Model.Discounts
 {
-    public class ValueBasedDiscount : DiscountCalculation
+    public class ValueBasedDiscount : DiscountStrategy
     {
-        private readonly double _discountValue;
-        public ValueBasedDiscount(int discountValue)
+        private readonly long _discountValue;
+        public ValueBasedDiscount(long discountValue)
         {
             _discountValue = discountValue;
         }
 
-        public override double CalculateDiscount(double totalPrice)
+        public override long CalculateDiscount(long totalPrice)
         {
-            throw new NotImplementedException();
+            return _discountValue;
         }
     }
 }

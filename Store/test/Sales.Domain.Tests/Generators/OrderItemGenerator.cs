@@ -10,10 +10,10 @@ namespace Sales.Domain.Tests.Generators
     {
         public static Arbitrary<OrderItem> Generate()
         {
-            return Arb.From(from id in Arb.Generate<long>()
+            return Arb.From(from id in Arb.Generate<PositiveInt>()
                 from quantity in Arb.Generate<PositiveInt>()
-                from eachPrice in Arb.Generate<PositiveInt>()
-                select new OrderItem(id, quantity.Get, eachPrice.Get));
+                from eachPrice in Arb.Generate<PositiveInt>().Where(a=> a.Get > 50)
+                select new OrderItem(id.Get, quantity.Get, eachPrice.Get));
         }
     }
 }
