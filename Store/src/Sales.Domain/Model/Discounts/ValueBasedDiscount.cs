@@ -2,7 +2,7 @@
 
 namespace Sales.Domain.Model.Discounts
 {
-    public class ValueBasedDiscount : DiscountCalculation
+    public class ValueBasedDiscount : DiscountStrategy
     {
         private readonly int _discountValue;
         public ValueBasedDiscount(int discountValue)
