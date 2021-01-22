@@ -25,10 +25,10 @@ namespace Sales.Domain.Tests
         }
 
         [Property]
-        public Property total_price_is_equal_to_add_each_price_to_itself_amount_times(PositiveInt amount, PositiveInt eachPrice)
+        public Property total_price_is_equal_to_add_each_price_to_itself_quantity_times(PositiveInt quantity, PositiveInt eachPrice)
         {
-            var orderItem = new OrderItem(TestProducts.Laptop, amount.Get, eachPrice.Get);
-            var expectedTotalPrice = Enumerable.Repeat(eachPrice.Get, amount.Get).Aggregate((a,b) => a + b);
+            var orderItem = new OrderItem(TestProducts.Laptop, quantity.Get, eachPrice.Get);
+            var expectedTotalPrice = Enumerable.Repeat(eachPrice.Get, quantity.Get).Aggregate((a,b) => a + b);
 
             return (orderItem.TotalPrice() == expectedTotalPrice).ToProperty();
         }
