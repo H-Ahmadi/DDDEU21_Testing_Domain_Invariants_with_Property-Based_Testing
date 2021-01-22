@@ -4,13 +4,13 @@ namespace Sales.Domain.Model.Discounts
 {
     public class PercentageBasedDiscount : DiscountCalculation
     {
-        private readonly double _percent;
+        private readonly float _percent;
         public PercentageBasedDiscount(float percent)
         {
             _percent = percent;
         }
 
-        public override double CalculateDiscount(double totalPrice)
+        public override long CalculateDiscount(long totalPrice)
         {
             throw new NotImplementedException();   
         }
