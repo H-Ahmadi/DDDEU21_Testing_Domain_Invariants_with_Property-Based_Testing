@@ -11,9 +11,9 @@ namespace Sales.Domain.Tests.Generators
         public static Arbitrary<OrderItem> Generate()
         {
             return Arb.From(from id in Arb.Generate<long>()
-                from amount in Arb.Generate<PositiveInt>()
+                from quantity in Arb.Generate<PositiveInt>()
                 from eachPrice in Arb.Generate<PositiveInt>()
-                select new OrderItem(id, amount.Get, eachPrice.Get));
+                select new OrderItem(id, quantity.Get, eachPrice.Get));
         }
     }
 }

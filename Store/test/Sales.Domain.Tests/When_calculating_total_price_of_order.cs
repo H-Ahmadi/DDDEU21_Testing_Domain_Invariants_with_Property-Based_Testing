@@ -17,7 +17,8 @@ namespace Sales.Domain.Tests
         [Property]
         public Property total_price_of_order_is_equal_to_total_price_of_item_when_there_is_only_one_item(OrderItem item)
         {
-            var order = new Order(1, new List<OrderItem>() { item });
+            var orderItems = new List<OrderItem> { item };
+            var order = new Order(1, orderItems);
             return (order.TotalPrice() == item.TotalPrice()).ToProperty();
         }
 
