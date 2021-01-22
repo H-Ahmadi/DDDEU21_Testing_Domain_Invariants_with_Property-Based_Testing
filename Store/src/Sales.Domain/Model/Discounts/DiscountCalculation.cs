@@ -2,6 +2,6 @@
 {
     public abstract class DiscountCalculation
     {
-        public abstract double CalculateDiscount(double totalPrice);
+        public abstract long CalculateDiscount(long totalPrice);
     }
 }
