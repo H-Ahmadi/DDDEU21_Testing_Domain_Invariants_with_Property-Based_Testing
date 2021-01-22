@@ -9,15 +9,15 @@ namespace Sales.Domain.Model.Discounts
         public long Id { get; private set; }
         public DateTime ExpirationTime { get; private set; }
         public DiscountCalculation Calculation { get; private set; }
-        public double MaxDiscountValue { get; private set; }
-        public Discount(long id,DateTime expirationTime, DiscountCalculation calculation, double maxDiscountValue)
+        public long? MaxDiscountValue { get; private set; }
+        public Discount(long id,DateTime expirationTime, DiscountCalculation calculation, long? maxDiscountValue)
         {
             Id = id;
             ExpirationTime = expirationTime;
             Calculation = calculation;
             MaxDiscountValue = maxDiscountValue;
         }
-        public float CalculateDiscountFor(Order order)
+        public long CalculateDiscountFor(Order order)
         {
             throw new NotImplementedException();
         }
