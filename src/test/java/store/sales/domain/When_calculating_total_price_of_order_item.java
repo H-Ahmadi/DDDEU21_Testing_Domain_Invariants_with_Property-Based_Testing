@@ -13,24 +13,25 @@ import static store.sales.domain.test.helpers.TestProducts.LAPTOP;
 public class When_calculating_total_price_of_order_item {
     @Property
     public void each_price_of_zero_always_results_in_total_price_of_zero(
-            @InRange(minInt = 0) int amount) {
-        var orderItem = new OrderItem(LAPTOP, amount, 0);
+            @InRange(minInt = 0) int quantity) {
+        var orderItem = new OrderItem(LAPTOP, quantity, 0);
         assertThat(orderItem.totalPrice()).isEqualTo(0);
     }
 
     @Property
-    public void total_price_is_equal_to_each_price_when_amount_is_one(
+    public void total_price_is_equal_to_each_price_when_quantity_is_one(
             @InRange(minInt = 0) int price) {
         var orderItem = new OrderItem(LAPTOP, 1, price);
         assertThat(orderItem.totalPrice()).isEqualTo(price);
     }
 
     @Property
-    public void total_price_is_equal_to_add_each_price_to_itself_amount_times(
-            @InRange(minInt = 0, maxInt = 20) int amount, @InRange(minInt = 0, maxInt = 20) int eachPrice) {
-        var orderItem = new OrderItem(LAPTOP, amount, eachPrice);
+    public void total_price_is_equal_to_add_each_price_to_itself_quantity_times(
+            @InRange(minInt = 0) int quantity,
+            @InRange(minInt = 0) int eachPrice) {
+        var orderItem = new OrderItem(LAPTOP, quantity, eachPrice);
         var expectedTotalPrice = 0;
-        for (int i = 0; i < amount; i++) {
+        for (int i = 0; i < quantity; i++) {
             expectedTotalPrice += eachPrice;
         }
 

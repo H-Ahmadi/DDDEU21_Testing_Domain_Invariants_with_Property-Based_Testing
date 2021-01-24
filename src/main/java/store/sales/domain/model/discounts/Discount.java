@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
 public class Discount {
     private final long id;
     private final LocalDateTime expirationTime;
-    private final DiscountCalculation calculation;
-    private final double maxDiscountValue;
+    private final DiscountStrategy strategy;
+    private final long maxDiscountValue;
 
     public Discount(
-            long id, LocalDateTime expirationTime, DiscountCalculation calculation, double maxDiscountValue) {
+            long id, LocalDateTime expirationTime, DiscountStrategy strategy, long maxDiscountValue) {
         this.id = id;
         this.expirationTime = expirationTime;
-        this.calculation = calculation;
+        this.strategy = strategy;
         this.maxDiscountValue = maxDiscountValue;
     }
 
@@ -30,8 +30,8 @@ public class Discount {
         return expirationTime;
     }
 
-    public DiscountCalculation getCalculation() {
-        return calculation;
+    public DiscountStrategy getStrategy() {
+        return strategy;
     }
 
     public double getMaxDiscountValue() {

@@ -1,29 +1,29 @@
 package store.sales.domain.model.orders;
 
 public class OrderItem {
-    private final long productId;
-    private final long amount;
-    private final long eachPrice;
+    private final int productId;
+    private final int quantity;
+    private final int eachPrice;
 
-    public OrderItem(long productId, long amount, long eachPrice) {
+    public OrderItem(int productId, int quantity, int eachPrice) {
         this.productId = productId;
-        this.amount = amount;
+        this.quantity = quantity;
         this.eachPrice = eachPrice;
     }
 
-    public long totalPrice() {
-        return eachPrice * amount;
+    public int totalPrice() {
+        return eachPrice * quantity;
     }
 
-    public long getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public long getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public long getEachPrice() {
+    public int getEachPrice() {
         return eachPrice;
     }
 }
