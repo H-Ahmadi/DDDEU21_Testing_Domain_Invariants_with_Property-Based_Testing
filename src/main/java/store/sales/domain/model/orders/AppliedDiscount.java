@@ -2,9 +2,9 @@ package store.sales.domain.model.orders;
 
 public class AppliedDiscount {
     private final long discountId;
-    private final double value;
+    private final int value;
 
-    public AppliedDiscount(long discountId, double value) {
+    public AppliedDiscount(long discountId, int value) {
         this.discountId = discountId;
         this.value = value;
     }
@@ -13,7 +13,7 @@ public class AppliedDiscount {
         return discountId;
     }
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 }

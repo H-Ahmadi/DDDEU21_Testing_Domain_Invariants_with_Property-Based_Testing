@@ -14,8 +14,12 @@ public class Order {
         this.items = items;
     }
 
-    public long totalPrice() {
-        throw new UnsupportedOperationException();
+    public int totalPrice() {
+        int sum = 0;
+        for (OrderItem item : items) {
+            sum += item.totalPrice();
+        }
+        return sum;
     }
 
     public void ApplyDiscount(Discount discount) {

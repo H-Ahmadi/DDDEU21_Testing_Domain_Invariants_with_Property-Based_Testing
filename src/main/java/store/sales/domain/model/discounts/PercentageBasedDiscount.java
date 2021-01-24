@@ -1,15 +1,15 @@
 package store.sales.domain.model.discounts;
 
-public class PercentageBasedDiscount extends DiscountCalculation {
+public class PercentageBasedDiscount extends DiscountStrategy {
 
-    private final double percent;
+    private final int percent;
 
-    public PercentageBasedDiscount(double percent) {
+    public PercentageBasedDiscount(int percent) {
         this.percent = percent;
     }
 
     @Override
-    public double calculateDiscount(double totalPrice) {
+    public int calculateDiscount(int totalPrice) {
         throw new UnsupportedOperationException();
     }
 }
