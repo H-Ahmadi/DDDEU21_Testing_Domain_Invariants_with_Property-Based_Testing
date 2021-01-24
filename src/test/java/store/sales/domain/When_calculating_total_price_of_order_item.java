@@ -15,6 +15,7 @@ public class When_calculating_total_price_of_order_item {
     public void each_price_of_zero_always_results_in_total_price_of_zero(
             @InRange(minInt = 0) int quantity) {
         var orderItem = new OrderItem(LAPTOP, quantity, 0);
+
         assertThat(orderItem.totalPrice()).isEqualTo(0);
     }
 
@@ -22,6 +23,7 @@ public class When_calculating_total_price_of_order_item {
     public void total_price_is_equal_to_each_price_when_quantity_is_one(
             @InRange(minInt = 0) int price) {
         var orderItem = new OrderItem(LAPTOP, 1, price);
+
         assertThat(orderItem.totalPrice()).isEqualTo(price);
     }
 

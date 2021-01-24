@@ -3,20 +3,12 @@ package store.sales.domain;
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.Ctor;
-import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.assertj.core.api.Assumptions;
 import org.junit.runner.RunWith;
-import store.sales.domain.generators.OrderItemGenerator;
 import store.sales.domain.model.orders.Order;
 import store.sales.domain.model.orders.OrderItem;
 
-import java.util.Arrays;
 import java.util.List;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assume.assumeThat;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
