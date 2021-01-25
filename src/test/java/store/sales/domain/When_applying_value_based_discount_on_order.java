@@ -38,4 +38,19 @@ public class When_applying_value_based_discount_on_order {
         assertThat(priceAfterApplyingDiscount).isEqualTo(0);
     }
 
+    @Property
+    public void adding_value_of_discount_to_total_price_results_in_total_price(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 0) int discountValue) {
+        var priceBeforeApplyingDiscount = order.totalPrice();
+        if (priceBeforeApplyingDiscount <= 0) discountValue = 0;
+        if (priceBeforeApplyingDiscount < discountValue) discountValue = 0;
+        ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(discountValue);
+        var discount = new DiscountBuilder().setStrategy(valueBasedDiscount).build();
+        order.applyDiscount(discount);
+        var priceAfterApplyingDiscount = order.totalPrice();
+
+        assertThat(priceAfterApplyingDiscount + discountValue)
+                .isEqualTo(priceBeforeApplyingDiscount);
+    }
 }
