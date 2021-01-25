@@ -19,14 +19,14 @@ public class Order {
         for (OrderItem item : items) {
             totalPrice += item.totalPrice();
         }
-        if (this.appliedDiscount == null) return totalPrice;
-        if (this.appliedDiscount.getValue() > totalPrice) return 0;
-        return totalPrice;
+        if (appliedDiscount == null) return totalPrice;
+        if (appliedDiscount.getValue() > totalPrice) return 0;
+        return totalPrice - appliedDiscount.getValue();
     }
 
     public void applyDiscount(Discount discount) {
         var discountValue = discount.calculateDiscountFor(this);
-        this.appliedDiscount = new AppliedDiscount(discount.getId(), discountValue);
+        appliedDiscount = new AppliedDiscount(discount.getId(), discountValue);
     }
 
     public long getId() {
