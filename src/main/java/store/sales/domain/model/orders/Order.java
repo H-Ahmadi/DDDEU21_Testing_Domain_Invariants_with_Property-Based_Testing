@@ -20,7 +20,7 @@ public class Order {
             totalPrice += item.totalPrice();
         }
         if (this.appliedDiscount == null) return totalPrice;
-        //if (this.appliedDiscount.getValue() > totalPrice) return 0;
+        if (this.appliedDiscount.getValue() > totalPrice) return 0;
         return totalPrice;
     }
 

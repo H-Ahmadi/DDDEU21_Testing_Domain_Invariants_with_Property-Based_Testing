@@ -6,7 +6,7 @@ import com.pholser.junit.quickcheck.random.SourceOfRandomness;
 import store.sales.domain.model.orders.OrderItem;
 
 public class OrderItemGenerator extends Generator<OrderItem> {
-    private int MAX = Integer.MAX_VALUE;
+    private int MAX = 20;
     private int MIN = 0;
 
     public OrderItemGenerator() {
