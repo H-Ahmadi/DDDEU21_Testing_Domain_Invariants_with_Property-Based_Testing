@@ -18,8 +18,8 @@ public class Discount {
         this.maxDiscountValue = maxDiscountValue;
     }
 
-    public float CalculateDiscountFor(Order order) {
-        throw new UnsupportedOperationException();
+    public int calculateDiscountFor(Order order) {
+        return strategy.calculateDiscount(order.totalPrice());
     }
 
     public long getId() {

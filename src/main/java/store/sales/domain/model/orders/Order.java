@@ -15,15 +15,18 @@ public class Order {
     }
 
     public int totalPrice() {
-        int sum = 0;
+        int totalPrice = 0;
         for (OrderItem item : items) {
-            sum += item.totalPrice();
+            totalPrice += item.totalPrice();
         }
-        return sum;
+        if (this.appliedDiscount == null) return totalPrice;
+        //if (this.appliedDiscount.getValue() > totalPrice) return 0;
+        return totalPrice;
     }
 
-    public void ApplyDiscount(Discount discount) {
-        throw new UnsupportedOperationException();
+    public void applyDiscount(Discount discount) {
+        var discountValue = discount.calculateDiscountFor(this);
+        this.appliedDiscount = new AppliedDiscount(discount.getId(), discountValue);
     }
 
     public long getId() {
