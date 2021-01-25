@@ -10,6 +10,6 @@ public class ValueBasedDiscount extends DiscountStrategy {
 
     @Override
     public int calculateDiscount(int totalPrice) {
-        throw new UnsupportedOperationException();
+        return discountValue;
     }
 }
