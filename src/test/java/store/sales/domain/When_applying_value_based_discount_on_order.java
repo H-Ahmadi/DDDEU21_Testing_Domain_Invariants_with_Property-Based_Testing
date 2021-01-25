@@ -2,8 +2,8 @@ package store.sales.domain;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.assertj.core.api.Assertions;
 import org.junit.runner.RunWith;
 import store.sales.domain.generators.OrderGenerator;
 import store.sales.domain.model.discounts.DiscountBuilder;
@@ -25,4 +25,17 @@ public class When_applying_value_based_discount_on_order {
 
         assertThat(priceBeforeApplyingDiscount).isEqualTo(priceAfterApplyingDiscount);
     }
+
+    @Property
+    public void applying_discount_results_in_free_order_when_discount_value_is_greater_than_price(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 401) int discountValue) {
+        ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(discountValue);
+        var discount = new DiscountBuilder().setStrategy(valueBasedDiscount).build();
+        order.applyDiscount(discount);
+        var priceAfterApplyingDiscount = order.totalPrice();
+
+        assertThat(priceAfterApplyingDiscount).isEqualTo(0);
+    }
+
 }
