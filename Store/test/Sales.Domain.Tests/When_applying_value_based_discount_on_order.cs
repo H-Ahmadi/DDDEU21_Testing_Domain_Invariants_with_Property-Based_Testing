@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using FsCheck;
 using FsCheck.Xunit;
@@ -54,5 +55,28 @@ namespace Sales.Domain.Tests
             }).When(totalPrice > 0);
         }
 
+        [Property]
+        public Property expired_discount_wont_affect_price_of_order(Order order, DateTime expireDateOfDiscount)
+        {
+            var discount = new DiscountBuilder().AsValueBasedDiscount(100).WithExpireDateAs(expireDateOfDiscount).Build();
+            var priceBeforeDiscount = order.TotalPrice();
+            order.ApplyDiscount(discount);
+            var priceAfterDiscount = order.TotalPrice();
+
+            return (priceBeforeDiscount == priceAfterDiscount)
+                .When(expireDateOfDiscount < DateTime.Now);
+        }
+
+        [Property]
+        public Property sum_of_applied_discount_and_price_after_discount_results_in_price_before_discount(Order order)
+        {
+            return Prop.ForAll(DiscountValueGenerator.GenerateWithMaximumValueOf(order.TotalPrice()), discountValue =>
+            {
+                var discount = new DiscountBuilder().AsValueBasedDiscount(discountValue).Build();
+                var priceBeforeDiscount = order.TotalPrice();
+                order.ApplyDiscount(discount);
+                return (order.TotalPrice() + order.AppliedDiscount.Value == priceBeforeDiscount).ToProperty();
+            }).When(order.TotalPrice() > 0);
+        }
     }
 }

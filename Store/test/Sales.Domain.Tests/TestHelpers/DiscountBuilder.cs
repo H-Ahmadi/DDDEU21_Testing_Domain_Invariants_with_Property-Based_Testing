@@ -35,6 +35,12 @@ namespace Sales.Domain.Tests.TestHelpers
             return this;
         }
 
+        public DiscountBuilder WithExpireDateAs(DateTime date)
+        {
+            this._expirationDate = date;
+            return this;
+        }
+
         public Discount Build()
         {
             return new Discount(_id, _expirationDate, _discountStrategy, maxDiscountValue);

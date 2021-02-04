@@ -26,6 +26,7 @@ namespace Sales.Domain.Model.Orders
         }
         public void ApplyDiscount(Discount discount)
         {
+            if (discount.ExpirationTime < DateTime.Now) return;
             var discountValue = discount.CalculateDiscountFor(this);
             this.AppliedDiscount = new AppliedDiscount(discount.Id, discountValue);
         }

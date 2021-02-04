@@ -50,5 +50,30 @@ namespace Sales.Domain.Tests
                 return Math.Abs(discountPercent - percent) < 0.5;
             }).When(order.TotalPrice() > 0);
         }
+
+        [Property]
+        public Property expired_discount_wont_affect_price_of_order(Order order, DateTime expireDateOfDiscount)
+        {
+            var discount = new DiscountBuilder().AsPercentageBasedDiscount(100).WithExpireDateAs(expireDateOfDiscount).Build();
+            var priceBeforeDiscount = order.TotalPrice();
+            order.ApplyDiscount(discount);
+            var priceAfterDiscount = order.TotalPrice();
+
+            return (priceBeforeDiscount == priceAfterDiscount)
+                .When(expireDateOfDiscount < DateTime.Now);
+        }
+
+        [Property]
+        public Property sum_of_applied_discount_and_price_after_discount_results_in_price_before_discount(Order order)
+        {
+            return Prop.ForAll(DiscountPercentGenerator.Generate(), discountPercent =>
+            {
+                var discount = new DiscountBuilder().AsPercentageBasedDiscount(discountPercent).Build();
+                var priceBeforeDiscount = order.TotalPrice();
+                order.ApplyDiscount(discount);
+                var x = order.TotalPrice();
+                return (order.TotalPrice() + order.AppliedDiscount.Value == priceBeforeDiscount).ToProperty();
+            }).When(order.TotalPrice() > 0);
+        }
     }
 }
