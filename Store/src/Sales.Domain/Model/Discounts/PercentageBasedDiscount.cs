@@ -12,7 +12,9 @@ namespace Sales.Domain.Model.Discounts
 
         public override long CalculateDiscount(long totalPrice)
         {
-            throw new NotImplementedException();   
+            var discount = _percent * totalPrice / 100;
+            var value = (long)Math.Round(discount);
+            return value;
         }
     }
 }
