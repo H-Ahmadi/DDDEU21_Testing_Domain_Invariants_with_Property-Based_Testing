@@ -20,7 +20,7 @@ namespace Sales.Domain.Tests.Generators
         public static Arbitrary<long> GenerateWithMaximumValueOf(long maximumValue)
         {
             return Arb.From(from value in Arb.Generate<long>()
-                where value <= maximumValue
+                where value <= maximumValue && value > 0
                 select value
             );
         }

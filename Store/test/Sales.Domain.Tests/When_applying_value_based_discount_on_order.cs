@@ -40,19 +40,19 @@ namespace Sales.Domain.Tests
         }
 
         [Property]
-        public Property adding_value_of_discount_to_total_price_results_in_total_price(long totalPrice)
+        public Property adding_value_of_discount_to_total_price_results_in_total_price_before_applying_discount(long totalPrice)
         {
             return Prop.ForAll(DiscountValueGenerator.GenerateWithMaximumValueOf(totalPrice), discountValue =>
             {
                 var order = OrderTestFactory.CreateOrderWithTotalPriceOf(totalPrice);
                 var priceBeforeDiscount = order.TotalPrice();
                 var discount = new DiscountBuilder().AsValueBasedDiscount(discountValue).Build();
-
                 order.ApplyDiscount(discount);
                 var priceAfterDiscount = order.TotalPrice();
 
                 return priceAfterDiscount + discountValue == priceBeforeDiscount;
             }).When(totalPrice > 0);
         }
+
     }
 }
