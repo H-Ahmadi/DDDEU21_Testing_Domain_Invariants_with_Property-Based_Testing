@@ -2,6 +2,7 @@ package store.sales.domain;
 
 import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
+import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
 import store.sales.domain.generators.OrderGenerator;
@@ -9,6 +10,7 @@ import store.sales.domain.model.discounts.DiscountBuilder;
 import store.sales.domain.model.discounts.PercentageBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
+import static java.lang.Math.abs;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitQuickcheck.class)
@@ -34,5 +36,19 @@ public class When_applying_percentage_based_discount_on_order {
         order.applyDiscount(discount);
 
         assertThat(order.totalPrice()).isEqualTo(0);
+    }
+
+    @Property
+    public void delta_of_price_before_and_after_discount_should_be_nearly_equal_to_discount_percent(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 1, maxInt = 99) int discountPercent) {
+        PercentageBasedDiscount percentageBasedDiscount = new PercentageBasedDiscount(100);
+        var discount = new DiscountBuilder().setStrategy(percentageBasedDiscount).build();
+        var priceBeforeDiscount = order.totalPrice();
+        order.applyDiscount(discount);
+        var priceAfterDiscount = order.totalPrice();
+
+        var percent = ((float)(priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100;
+        assertThat(abs(discountPercent - percent)).isGreaterThan(0.5F);
     }
 }
