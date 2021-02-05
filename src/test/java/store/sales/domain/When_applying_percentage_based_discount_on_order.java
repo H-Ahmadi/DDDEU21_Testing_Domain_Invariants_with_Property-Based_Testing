@@ -81,7 +81,7 @@ public class When_applying_percentage_based_discount_on_order {
     @Property
     public void applied_discount_should_never_be_greater_than_max_discount_value(
             @From(OrderGenerator.class) Order order,
-            @InRange(minInt = 1, maxInt = 99) int maxDiscountValue) {
+            @InRange(minInt = 1) int maxDiscountValue) {
         PercentageBasedDiscount percentBasedDiscount = new PercentageBasedDiscount(10);
         var discount = new DiscountBuilder()
                 .setStrategy(percentBasedDiscount)

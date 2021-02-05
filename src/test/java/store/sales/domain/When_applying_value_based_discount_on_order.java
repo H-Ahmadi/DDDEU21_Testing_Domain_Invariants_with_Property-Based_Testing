@@ -7,6 +7,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.runner.RunWith;
 import store.sales.domain.generators.OrderGenerator;
 import store.sales.domain.model.discounts.DiscountBuilder;
+import store.sales.domain.model.discounts.PercentageBasedDiscount;
 import store.sales.domain.model.discounts.ValueBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
@@ -79,5 +80,20 @@ public class When_applying_value_based_discount_on_order {
         var priceAfterDiscount = order.totalPrice();
 
         assertThat(priceBeforeDiscount).isEqualTo(priceAfterDiscount);
+    }
+
+    @Property
+    public void applied_discount_should_never_be_greater_than_max_discount_value(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 1) int maxDiscountValue) {
+        ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(10);
+        var discount = new DiscountBuilder()
+                .setStrategy(valueBasedDiscount)
+                .setExpirationTime(now().plusDays(1))
+                .setMaxDiscountValue(maxDiscountValue)
+                .build();
+        order.applyDiscount(discount);
+
+        assertThat(order.getAppliedDiscount().getValue()).isLessThanOrEqualTo(maxDiscountValue);
     }
 }
