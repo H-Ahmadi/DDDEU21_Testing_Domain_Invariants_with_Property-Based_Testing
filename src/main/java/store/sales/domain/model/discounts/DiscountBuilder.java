@@ -6,7 +6,7 @@ public class DiscountBuilder {
     private long id;
     private LocalDateTime expirationTime;
     private DiscountStrategy strategy;
-    private long maxDiscountValue;
+    private int maxDiscountValue;
 
     public DiscountBuilder setId(long id) {
         this.id = id;
@@ -23,7 +23,7 @@ public class DiscountBuilder {
         return this;
     }
 
-    public DiscountBuilder setMaxDiscountValue(long maxDiscountValue) {
+    public DiscountBuilder setMaxDiscountValue(int maxDiscountValue) {
         this.maxDiscountValue = maxDiscountValue;
         return this;
     }

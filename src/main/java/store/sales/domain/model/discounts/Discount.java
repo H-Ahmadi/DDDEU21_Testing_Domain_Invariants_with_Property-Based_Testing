@@ -8,10 +8,10 @@ public class Discount {
     private final long id;
     private final LocalDateTime expirationTime;
     private final DiscountStrategy strategy;
-    private final long maxDiscountValue;
+    private final int maxDiscountValue;
 
     public Discount(
-            long id, LocalDateTime expirationTime, DiscountStrategy strategy, long maxDiscountValue) {
+            long id, LocalDateTime expirationTime, DiscountStrategy strategy, int maxDiscountValue) {
         this.id = id;
         this.expirationTime = expirationTime;
         this.strategy = strategy;
@@ -19,7 +19,15 @@ public class Discount {
     }
 
     public int calculateDiscountFor(Order order) {
-        return strategy.calculateDiscount(order.totalPrice());
+        var discount = strategy.calculateDiscount(order.totalPrice());
+        if (discountExceedsMaximumValue(discount))
+            return this.maxDiscountValue;
+        return discount;
+    }
+
+    private boolean discountExceedsMaximumValue(int discount) {
+        if (maxDiscountValue == 0) return false;
+        return maxDiscountValue < discount;
     }
 
     public long getId() {
@@ -34,7 +42,7 @@ public class Discount {
         return strategy;
     }
 
-    public double getMaxDiscountValue() {
+    public int getMaxDiscountValue() {
         return maxDiscountValue;
     }
 }

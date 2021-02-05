@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import store.sales.domain.generators.OrderGenerator;
 import store.sales.domain.model.discounts.DiscountBuilder;
 import store.sales.domain.model.discounts.PercentageBasedDiscount;
-import store.sales.domain.model.discounts.ValueBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
 import static java.lang.Math.abs;
@@ -67,7 +66,7 @@ public class When_applying_percentage_based_discount_on_order {
     public void expired_discount_wont_affect_price_of_order(
             @From(OrderGenerator.class) Order order,
             @InRange(minInt = 1) int time) {
-        PercentageBasedDiscount percentBasedDiscount = new PercentageBasedDiscount(100);
+        PercentageBasedDiscount percentBasedDiscount = new PercentageBasedDiscount(10);
         var discount = new DiscountBuilder()
                 .setStrategy(percentBasedDiscount)
                 .setExpirationTime(now().minusNanos(time))
@@ -77,5 +76,20 @@ public class When_applying_percentage_based_discount_on_order {
         var priceAfterDiscount = order.totalPrice();
 
         assertThat(priceBeforeDiscount).isEqualTo(priceAfterDiscount);
+    }
+
+    @Property
+    public void applied_discount_should_never_be_greater_than_max_discount_value(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 1, maxInt = 99) int maxDiscountValue) {
+        PercentageBasedDiscount percentBasedDiscount = new PercentageBasedDiscount(10);
+        var discount = new DiscountBuilder()
+                .setStrategy(percentBasedDiscount)
+                .setExpirationTime(now().plusDays(1))
+                .setMaxDiscountValue(maxDiscountValue)
+                .build();
+        order.applyDiscount(discount);
+
+        assertThat(order.getAppliedDiscount().getValue()).isLessThanOrEqualTo(maxDiscountValue);
     }
 }
