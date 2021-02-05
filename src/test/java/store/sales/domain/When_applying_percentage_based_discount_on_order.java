@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import store.sales.domain.generators.OrderGenerator;
 import store.sales.domain.model.discounts.DiscountBuilder;
 import store.sales.domain.model.discounts.PercentageBasedDiscount;
+import store.sales.domain.model.discounts.ValueBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
 import static java.lang.Math.abs;
@@ -60,5 +61,21 @@ public class When_applying_percentage_based_discount_on_order {
 
         var percent = ((float)(priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100;
         assertThat(abs(discountPercent - percent)).isGreaterThan(0.5F);
+    }
+
+    @Property
+    public void expired_discount_wont_affect_price_of_order(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 1) int time) {
+        PercentageBasedDiscount percentBasedDiscount = new PercentageBasedDiscount(100);
+        var discount = new DiscountBuilder()
+                .setStrategy(percentBasedDiscount)
+                .setExpirationTime(now().minusNanos(time))
+                .build();
+        var priceBeforeDiscount = order.totalPrice();
+        order.applyDiscount(discount);
+        var priceAfterDiscount = order.totalPrice();
+
+        assertThat(priceBeforeDiscount).isEqualTo(priceAfterDiscount);
     }
 }
