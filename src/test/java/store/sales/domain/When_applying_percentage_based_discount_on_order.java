@@ -11,6 +11,7 @@ import store.sales.domain.model.discounts.PercentageBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
 import static java.lang.Math.abs;
+import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(JUnitQuickcheck.class)
@@ -20,7 +21,10 @@ public class When_applying_percentage_based_discount_on_order {
     public void zero_percent_discount_does_not_change_the_price(
             @From(OrderGenerator.class) Order order) {
         PercentageBasedDiscount percentageBasedDiscount = new PercentageBasedDiscount(0);
-        var discount = new DiscountBuilder().setStrategy(percentageBasedDiscount).build();
+        var discount = new DiscountBuilder()
+                .setStrategy(percentageBasedDiscount)
+                .setExpirationTime(now().plusDays(1))
+                .build();
         var priceBeforeApplyingDiscount = order.totalPrice();
         order.applyDiscount(discount);
         var priceAfterApplyingDiscount = order.totalPrice();
@@ -32,7 +36,10 @@ public class When_applying_percentage_based_discount_on_order {
     public void hundred_percent_discount_results_in_free_order(
             @From(OrderGenerator.class) Order order) {
         PercentageBasedDiscount percentageBasedDiscount = new PercentageBasedDiscount(100);
-        var discount = new DiscountBuilder().setStrategy(percentageBasedDiscount).build();
+        var discount = new DiscountBuilder()
+                .setStrategy(percentageBasedDiscount)
+                .setExpirationTime(now().plusDays(1))
+                .build();
         order.applyDiscount(discount);
 
         assertThat(order.totalPrice()).isEqualTo(0);
@@ -43,7 +50,10 @@ public class When_applying_percentage_based_discount_on_order {
             @From(OrderGenerator.class) Order order,
             @InRange(minInt = 1, maxInt = 99) int discountPercent) {
         PercentageBasedDiscount percentageBasedDiscount = new PercentageBasedDiscount(100);
-        var discount = new DiscountBuilder().setStrategy(percentageBasedDiscount).build();
+        var discount = new DiscountBuilder()
+                .setStrategy(percentageBasedDiscount)
+                .setExpirationTime(now().plusDays(1))
+                .build();
         var priceBeforeDiscount = order.totalPrice();
         order.applyDiscount(discount);
         var priceAfterDiscount = order.totalPrice();

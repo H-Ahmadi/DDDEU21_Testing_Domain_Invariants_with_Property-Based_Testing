@@ -10,8 +10,9 @@ import store.sales.domain.model.discounts.DiscountBuilder;
 import store.sales.domain.model.discounts.ValueBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
+import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assume.assumeThat;
 
 @RunWith(JUnitQuickcheck.class)
@@ -20,7 +21,10 @@ public class When_applying_value_based_discount_on_order {
     @Property
     public void zero_discount_does_not_change_the_price(@From(OrderGenerator.class) Order order) {
         ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(0);
-        var discount = new DiscountBuilder().setStrategy(valueBasedDiscount).build();
+        var discount = new DiscountBuilder()
+                .setExpirationTime(now().plusDays(1))
+                .setStrategy(valueBasedDiscount)
+                .build();
         var priceBeforeApplyingDiscount = order.totalPrice();
         order.applyDiscount(discount);
         var priceAfterApplyingDiscount = order.totalPrice();
@@ -33,7 +37,10 @@ public class When_applying_value_based_discount_on_order {
             @From(OrderGenerator.class) Order order,
             @InRange(minInt = 401) int discountValue) {
         ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(discountValue);
-        var discount = new DiscountBuilder().setStrategy(valueBasedDiscount).build();
+        var discount = new DiscountBuilder()
+                .setExpirationTime(now().plusDays(1))
+                .setStrategy(valueBasedDiscount)
+                .build();
         order.applyDiscount(discount);
         var priceAfterApplyingDiscount = order.totalPrice();
 
@@ -47,11 +54,30 @@ public class When_applying_value_based_discount_on_order {
         var priceBeforeApplyingDiscount = order.totalPrice();
         assumeThat(priceBeforeApplyingDiscount, greaterThan(discountValue));
         ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(discountValue);
-        var discount = new DiscountBuilder().setStrategy(valueBasedDiscount).build();
+        var discount = new DiscountBuilder()
+                .setExpirationTime(now().plusDays(1))
+                .setStrategy(valueBasedDiscount)
+                .build();
         order.applyDiscount(discount);
         var priceAfterApplyingDiscount = order.totalPrice();
 
         assertThat(priceAfterApplyingDiscount + discountValue)
                 .isEqualTo(priceBeforeApplyingDiscount);
+    }
+
+    @Property
+    public void expired_discount_wont_affect_price_of_order(
+            @From(OrderGenerator.class) Order order,
+            @InRange(minInt = 1) int time) {
+        ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(100);
+        var discount = new DiscountBuilder()
+                .setStrategy(valueBasedDiscount)
+                .setExpirationTime(now().minusNanos(time))
+                .build();
+        var priceBeforeDiscount = order.totalPrice();
+        order.applyDiscount(discount);
+        var priceAfterDiscount = order.totalPrice();
+
+        assertThat(priceBeforeDiscount).isEqualTo(priceAfterDiscount);
     }
 }

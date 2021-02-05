@@ -2,7 +2,10 @@ package store.sales.domain.model.orders;
 
 import store.sales.domain.model.discounts.Discount;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.time.LocalDateTime.now;
 
 public class Order {
     private final List<OrderItem> items;
@@ -25,6 +28,7 @@ public class Order {
     }
 
     public void applyDiscount(Discount discount) {
+        if (discount.getExpirationTime().isBefore(now())) return;
         var discountValue = discount.calculateDiscountFor(this);
         appliedDiscount = new AppliedDiscount(discount.getId(), discountValue);
     }
