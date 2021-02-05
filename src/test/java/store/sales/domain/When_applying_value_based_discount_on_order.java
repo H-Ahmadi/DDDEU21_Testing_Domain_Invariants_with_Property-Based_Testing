@@ -43,10 +43,9 @@ public class When_applying_value_based_discount_on_order {
     @Property
     public void adding_value_of_discount_to_total_price_results_in_total_price_before_applying_discount(
             @From(OrderGenerator.class) Order order,
-            @InRange(minInt = 0) int discountValue) {
+            @InRange(minInt = 0, maxInt = 1000) int discountValue) {
         var priceBeforeApplyingDiscount = order.totalPrice();
-        assumeThat(priceBeforeApplyingDiscount, lessThan(discountValue));
-        if (priceBeforeApplyingDiscount < discountValue) discountValue = 0;
+        assumeThat(priceBeforeApplyingDiscount, greaterThan(discountValue));
         ValueBasedDiscount valueBasedDiscount = new ValueBasedDiscount(discountValue);
         var discount = new DiscountBuilder().setStrategy(valueBasedDiscount).build();
         order.applyDiscount(discount);
