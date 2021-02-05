@@ -47,7 +47,8 @@ namespace Sales.Domain.Tests
                 var priceAfterDiscount = order.TotalPrice();
 
                 var percent = ((float)(priceBeforeDiscount - priceAfterDiscount) / priceBeforeDiscount) * 100;
-                return Math.Abs(discountPercent - percent) < 0.5;
+                var result = Math.Abs(discountPercent - percent) < 0.5;
+                return result;
             }).When(order.TotalPrice() > 0);
         }
 
@@ -74,6 +75,21 @@ namespace Sales.Domain.Tests
                 var x = order.TotalPrice();
                 return (order.TotalPrice() + order.AppliedDiscount.Value == priceBeforeDiscount).ToProperty();
             }).When(order.TotalPrice() > 0);
+        }
+
+        [Property]
+        public Property applied_discount_should_never_be_greater_than_max_discount_value(Order order, PositiveInt maxDiscountValue)
+        {
+            return Prop.ForAll(DiscountPercentGenerator.Generate(), discountPercent =>
+            {
+                var discount = new DiscountBuilder()
+                                    .AsPercentageBasedDiscount(discountPercent)
+                                    .WithMaxDiscountValue(maxDiscountValue.Get)
+                                    .Build();
+
+                order.ApplyDiscount(discount);
+                return (order.AppliedDiscount.Value <= maxDiscountValue.Get).ToProperty();
+            });
         }
     }
 }

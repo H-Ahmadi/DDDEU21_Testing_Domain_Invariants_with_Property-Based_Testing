@@ -9,7 +9,7 @@ namespace Sales.Domain.Tests.Generators
         public static Arbitrary<float> Generate()
         {
             return Arb.From(from value in Arb.Generate<float>()
-                where value > 0 && value < 100
+                where value >= 1 && value < 100
                 select (float)Math.Round(value, 1)
             );
         }

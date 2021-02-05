@@ -78,5 +78,17 @@ namespace Sales.Domain.Tests
                 return (order.TotalPrice() + order.AppliedDiscount.Value == priceBeforeDiscount).ToProperty();
             }).When(order.TotalPrice() > 0);
         }
+
+        [Property]
+        public Property applied_discount_should_never_be_greater_than_max_discount_value(Order order, PositiveInt discountValue, PositiveInt maxDiscountValue)
+        {
+            var discount = new DiscountBuilder()
+                .AsValueBasedDiscount(discountValue.Get)
+                .WithMaxDiscountValue(maxDiscountValue.Get)
+                .Build();
+
+            order.ApplyDiscount(discount);
+            return (order.AppliedDiscount.Value <= maxDiscountValue.Get).ToProperty();
+        }
     }
 }
