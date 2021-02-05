@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import store.sales.domain.generators.OrderGenerator;
 import store.sales.domain.model.discounts.DiscountBuilder;
 import store.sales.domain.model.discounts.PercentageBasedDiscount;
-import store.sales.domain.model.discounts.ValueBasedDiscount;
 import store.sales.domain.model.orders.Order;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,5 +24,15 @@ public class When_applying_percentage_based_discount_on_order {
         var priceAfterApplyingDiscount = order.totalPrice();
 
         assertThat(priceBeforeApplyingDiscount).isEqualTo(priceAfterApplyingDiscount);
+    }
+
+    @Property
+    public void hundred_percent_discount_results_in_free_order(
+            @From(OrderGenerator.class) Order order) {
+        PercentageBasedDiscount percentageBasedDiscount = new PercentageBasedDiscount(100);
+        var discount = new DiscountBuilder().setStrategy(percentageBasedDiscount).build();
+        order.applyDiscount(discount);
+
+        assertThat(order.totalPrice()).isEqualTo(0);
     }
 }
