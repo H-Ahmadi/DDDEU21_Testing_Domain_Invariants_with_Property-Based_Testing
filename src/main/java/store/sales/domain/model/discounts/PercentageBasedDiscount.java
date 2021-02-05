@@ -1,5 +1,7 @@
 package store.sales.domain.model.discounts;
 
+import static java.lang.Math.round;
+
 public class PercentageBasedDiscount extends DiscountStrategy {
 
     private final int percent;
@@ -10,6 +12,7 @@ public class PercentageBasedDiscount extends DiscountStrategy {
 
     @Override
     public int calculateDiscount(int totalPrice) {
-        throw new UnsupportedOperationException();
+        var discount = percent * totalPrice / 100;
+        return round(discount);
     }
 }
